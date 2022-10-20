@@ -8,6 +8,7 @@ const Meals = () => {
     // les données sont ensuite dispo à chaque rendu de mon composant dans une variable
     // useState me fournit la variable contenant les données et une fonction pour modifier les
     const [ meals, setMeals ] = useState([]);
+    const [ meal, setMeal ] = useState(null);
 
     // je viens utiliser le hook useEffect
     // cette fonction de react me permet d'executer du code quand mon composant 
@@ -30,21 +31,51 @@ const Meals = () => {
         })();
     }, [])
 
+    // n'est appelé que quand on clique sur une recette
+    const showMealDetail = (mealId) => {
+        (async () => {
+            // fait un appel vers l'api en fonction de l'id de la recette cliquée
+            const response = await fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i='+mealId);
+            const mealDetails = await response.json();
+            // stocke dans la variable d'état meal le détail d'une recette
+            setMeal(mealDetails.meals[0]);
+        })();
+    }
+
     return (
         <main>
-            <img src="https://img.cuisineaz.com/680x357/2015/07/08/i62904-recettes-japonaises.jpg" alt="ramen"/>
-            <div>
-            {/* je fais une boucle sur la variable d'état meals.
-                Au premier chargement cette variable contient la valeur par défaut, c'est à dire
-                 un tableau vide. Donc rien ne sera affiché dans la boucle. Au deuxième chargement
-                la variable contiendra les recettes issues de l'api, donc ma boucle les affichera
-             */}
-            {meals.map(meal => {
-                return (
+            {/* si la variable d'état meal n'est pas null (c'est un if else 
+            mais avec la syntaxe de l'opérateur ternaire) 
+            on affiche le détail de la recette
+            */}
+            {meal ?
+                <article>
                     <h2>{meal.strMeal}</h2>
-                )
-            })}
-            </div>
+                    <p>{meal.strInstructions}</p>
+                </article>
+            // sinon on affiche la liste des recettes 
+            :    
+                <div>
+
+                {/* je fais une boucle sur la variable d'état meals.
+                    Au premier chargement cette variable contient la valeur par défaut, c'est à dire
+                    un tableau vide. Donc rien ne sera affiché dans la boucle. Au deuxième chargement
+                    la variable contiendra les recettes issues de l'api, donc ma boucle les affichera
+                */}
+                    <section>
+                        {meals.map(meal => {
+                            return (
+                                <article>
+                                    <p onClick={() => showMealDetail(meal.idMeal)}>
+                                        {meal.strMeal}
+                                    </p>
+                                </article>
+                            )
+                        })}
+                    </section>
+                </div> 
+            }
+    
         </main>
     );
 }
