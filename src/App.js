@@ -1,24 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './Header';
+import Meals from './Meals';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    //  permet de définir un parent "vide", car un composant
+    // react ne peut avoir qu'un seul parent défini dans son jsx (comme dans
+    //  createElement(())
+    <>
+    {/* j'importe les composants Header et Meals, pour récupérer leur contenu jsx */}
+      <Header />
+      <Meals />
+    </>  
   );
 }
 
