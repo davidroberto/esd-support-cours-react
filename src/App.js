@@ -1,17 +1,18 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Header from './Header';
-import Meals from './Meals';
+import Article from './pages/Article';
+import Articles from './pages/Articles';
+import Home from './pages/Home';
 
 function App() {
   return (
-    //  permet de définir un parent "vide", car un composant
-    // react ne peut avoir qu'un seul parent défini dans son jsx (comme dans
-    //  createElement(())
-    <>
-    {/* j'importe les composants Header et Meals, pour récupérer leur contenu jsx */}
-      <Header />
-      <Meals />
-    </>  
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/articles" element={<Articles  />} />
+        <Route path="/articles/:id" element={<Article  />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
